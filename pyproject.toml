@@ -1,0 +1,25 @@
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "paper-bot"
+version = "1.0.0"
+description = "paper__bot"
+authors = ["Julia Patrin <papercrane@reversefold.com>"]
+homepage = "https://github.com/reversefold/"
+packages = [
+    {include="paper__bot"},
+]
+
+[tool.poetry.scripts]
+"paper__bot" = "paper__bot.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.9,<3.10"
+PythonTwitchBotFramework = "^2.3.9"
+
+[tool.poetry.dev-dependencies]
+ipython = "^7.11.1"
+jupyter = "^1.0.0"
+ipdb = "^0.12.3"
