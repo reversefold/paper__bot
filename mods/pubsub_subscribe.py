@@ -1,3 +1,4 @@
+import logging
 import re
 
 from twitchbot import PubSubTopics, Mod, get_pubsub
@@ -7,8 +8,11 @@ import twitchbot.pubsub.pubsub_follow
 import twitchbot.channel
 
 
+LOG = logging.getLogger(__name__)
+
+
 config = twitchbot.Config(
-    twitchbot.CONFIG_FOLDER / 'follower_autoban.json',
+    twitchbot.CONFIG_FOLDER / "follower_autoban.json",
     ban_regexes=[{"regex": r"^h[o0][s5][s5].*312.*$", "flags": 2}],
 )
 
@@ -33,17 +37,17 @@ class PubSubSubscriberMod(Mod):
 
     async def on_pubsub_received(self, raw: "PubSubData"):
         # this should print any errors received from twitch
-        print(raw.raw_data)
+        LOG.error(raw.raw_data)
 
     async def on_pubsub_user_follow(
         self,
         raw: twitchbot.models.PubSubData,
         data: twitchbot.pubsub.pubsub_follow.PubSubFollow,
     ):
-        print(twitchbot.channel.channels)
-        print(f"New follower {data.follower_username} {data.follower_id}")
+        LOG.debug(twitchbot.channel.channels)
+        LOG.info(f"New follower {data.follower_username} {data.follower_id}")
         for ban_re in self.ban_regexes:
             if ban_re.match(data.follower_username):
-                print(f"Banning {data.follower_username} ({data.follower_id})")
+                LOG.info(f"Banning {data.follower_username} ({data.follower_id})")
                 channel = await data.get_channel()
                 await channel.send_command(f"ban {data.follower_username}")
