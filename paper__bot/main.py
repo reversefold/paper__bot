@@ -3,13 +3,37 @@ import logging
 
 import discord
 import twitchbot
-
+from twitchbot.util import twitch_api_util
 
 LOG = logging.getLogger(__name__)
 
 
 class PaperTwitchBot(twitchbot.BaseBot):
     pass
+
+
+@twitchbot.Command("so", help="shoutout!", syntax="<channel>", permission="so")
+async def shoutout(msg: twitchbot.Message, *args):
+    if not args:
+        return
+    channel_name = args[0]
+    if not channel_name:
+        return
+    if channel_name[0] == "@":
+        channel_name = channel_name[1:]
+    so_msg = f"Go check out https://twitch.tv/{channel_name}"
+    try:
+        channel_info = await twitch_api_util.get_channel_info(channel_name)
+        if channel_info:
+            if channel_info.game_name:
+                so_msg += f", last seen in the {channel_info.game_name} category"
+            else:
+                LOG.error(f"No game name for channel {channel_name}")
+        else:
+            LOG.error(f"No data found for channel {channel_name}")
+    except Exception:
+        LOG.exception(f"Exception getting channel info for {channel_name}")
+    await msg.reply(so_msg)
 
 
 class PaperDiscordBot(discord.Client):
