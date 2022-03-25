@@ -16,7 +16,7 @@ packages = [
 "paper__bot" = "paper__bot.main:main"
 
 [tool.poetry.dependencies]
-python = "^3.9,<3.10"
+python = "^3.10"
 PythonTwitchBotFramework = "^2.3.9"
 "discord.py" = "^1.7.3"
 aiohttp = {extras = ["speedups"], version = "^3.7.4"}
