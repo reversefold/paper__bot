@@ -20,6 +20,7 @@ python = "^3.10"
 PythonTwitchBotFramework = "^2.3.9"
 "discord.py" = "^1.7.3"
 aiohttp = {extras = ["speedups"], version = "^3.7.4"}
+alembic = "^1.7.7"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.11.1"
